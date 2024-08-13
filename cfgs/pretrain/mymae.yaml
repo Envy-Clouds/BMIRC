@@ -1,0 +1,37 @@
+# Input and output tasks
+in_domains: ecg_t-ecg_f
+out_domains: ecg_t-ecg_f
+
+# Architecture
+model: backbone_cka
+decoder_dim: 96
+input_size: 1000
+patch_size: 10
+num_encoded_tokens: 25 # Total would be 100 patches. 100 / 4 = 25 (for single modality)
+num_encoded_tokens_f: 12
+num_global_tokens: 1
+#decoder_depth: 4
+
+# Train
+epochs: 300
+opt: adamw
+blr: 0.0001 # this is base_lr = 1e-4, lr = base_lr * batch_size / 128
+warmup_lr: 0.000001 # 1e-6
+min_lr: 0.
+warmup_epochs: 40
+weight_decay: 0.05
+batch_size: 128
+loss_on_unmasked: False
+model_ema: False
+
+# Data
+data_path: 'dataset/ecg/ningbo.npy'
+labels_path: 'dataset/ecg/ningbo_label.npy'
+
+
+# Wandb logging
+log_wandb: False # Set to True to log to Weights & Biases
+wandb_project: 'pretrain'
+wandb_entity: null # Change if needed
+wandb_run_name: mymae_pretrain
+output_dir: '' # Change directory if needed

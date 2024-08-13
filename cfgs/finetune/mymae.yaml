@@ -1,0 +1,34 @@
+finetune: 'output/pretrain/ningbo/mymae/checkpoint-299.pth' # Change me
+
+# Model
+model: my_backbone
+patch_size: 10
+use_mean_pooling: True
+drop: 0.
+drop_path: 0.1
+attn_drop_rate: 0.
+
+# Train
+eval: False
+epochs: 30
+opt: adamw
+blr: 0.001  # 0.001 for ft and 0.005 for lp
+weight_decay: 0.05
+warmup_epochs: 5
+batch_size: 128
+input_size: 1000
+layer_decay: 0.75
+
+# Data
+folds: 4
+nb_classes: 19
+in_domains: 'ecg_t-ecg_f'
+data_path: 'dataset/ecg/shaoxing.npy'
+labels_path: 'dataset/ecg/shaoxing_label.npy'
+
+# Wandb logging
+log_wandb: False # Set to True to activate logging to Weights & Biases
+wandb_project: 'finetune'
+wandb_entity: null # Change if needed
+wandb_run_name: mymae_finetune
+output_dir: '' # Change if needed
