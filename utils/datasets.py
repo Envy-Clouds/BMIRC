@@ -119,20 +119,20 @@ def data_process(data, lowcut, highcut, notch_freq, fs):
     nyquist = 0.5 * fs
     low = lowcut / nyquist
     high = highcut / nyquist
-    b, a = butter(butter_order, [low, high], btype='band', output='sos')
+    sos1 = butter(butter_order, [low, high], btype='band', output='sos')
 
     # 陷波滤波器参数
     notch_freq = notch_freq  # 陷波滤波器的频率 (Hz)
     notch_width = 2.0  # 陷波滤波器的带宽 (Hz)
     notch_low = (notch_freq - notch_width / 2) / nyquist
     notch_high = (notch_freq + notch_width / 2) / nyquist
-    b_notch, a_notch = butter(butter_order, [notch_low, notch_high],
+    sos2 = butter(butter_order, [notch_low, notch_high],
                               btype='bandstop', output='sos')
 
     final_signal_list = []
     for ss in tqdm(signal):
         # 应用巴特沃斯带通滤波器
-        filtered_signal = sosfilt(b, sosfiltfilt(b_notch, ss))
+        filtered_signal = sosfilt(sos1, sosfiltfilt(sos2, ss))
         # 下采样10倍
         down_signal = down_samples(fs, 100, filtered_signal)
         # 标准化
